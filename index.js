@@ -167,6 +167,7 @@ document.addEventListener('keypress', function (e) {
         nn.train(trainData, {log: true});
 
         const res = nn.run(d.findFillRectangles());
+        console.log(res);
 
         if (res.positive.toFixed(1) > res.negative.toFixed(1)) {
             alert('Positive');
