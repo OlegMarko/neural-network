@@ -34,6 +34,8 @@ function DrawCanvas(el) {
         el.width = canv.width;
         el.height = canv.height;
         ctx.clearRect(0, 0, canv.width, canv.height);
+
+        document.getElementById('choose-type').style.display = 'none';
     };
 
     this.drawGrid = function () {
@@ -137,44 +139,56 @@ let trainData = [];
 const d = new DrawCanvas(document.getElementById('canvas'));
 d.clear();
 
-document.addEventListener('keypress', function (e) {
-    if (e.key.toLowerCase() === 'c') {
-        d.clear();
-    }
+document.getElementById('clear').addEventListener('click', function (e) {
+    d.clear();
+});
 
-    if (e.key.toLowerCase() === 'v') {
-        vector = d.findFillRectangles(true);
+document.getElementById('validate').addEventListener('click', function (e) {
+    vector = d.findFillRectangles(true);
 
-        if (confirm('Positive?')) {
-            trainData.push({
-                input: vector,
-                output: {
-                    positive: 1
-                }
-            });
-        } else {
-            trainData.push({
-                input: vector,
-                output: {
-                    negative: 1
-                }
-            });
+    document.getElementById('choose-type').style.display = 'block';
+});
+
+document.getElementById('positive').addEventListener('click', function (e) {
+    trainData.push({
+        input: vector,
+        output: {
+            positive: 1
         }
-    }
+    });
 
-    if (e.key.toLocaleLowerCase() === 'b') {
-        nn = new brainjs.NeuralNetwork();
-        nn.train(trainData, {log: true});
-
-        const res = nn.run(d.findFillRectangles());
-        console.log(res);
-
-        if (res.positive.toFixed(1) > res.negative.toFixed(1)) {
-            alert('Positive');
-        } else if (res.positive.toFixed(1) < res.negative.toFixed(1)) {
-            alert('Negative');
-        } else {
-            alert('Did\'nt detect it...');
+    console.log(trainData);
+    d.clear();
+});
+document.getElementById('negative').addEventListener('click', function (e) {
+    trainData.push({
+        input: vector,
+        output: {
+            negative: 1
         }
+    });
+
+    console.log(trainData);
+    d.clear();
+});
+
+document.getElementById('build').addEventListener('click', function (e) {
+    nn = new brainjs.NeuralNetwork();
+    nn.train(trainData, {log: true});
+
+    const res = nn.run(d.findFillRectangles());
+    console.log(res);
+
+    let resText = 'Did\'nt detect it...';
+
+    if (res.positive > res.negative) {
+        resText = 'Positive';
+        document.getElementById('result').color = '#0c0';
+    } else if (res.positive < res.negative) {
+        resText = 'Negative';
+        document.getElementById('result').color = '#c00';
     }
+
+    document.getElementById('result').innerHTML = resText;
+    d.clear();
 });

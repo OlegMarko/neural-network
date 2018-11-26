@@ -12,3 +12,51 @@ body {
     margin: auto;
     background-color: #ffffff;
 }
+
+.but-container {
+    display: block;
+    width: 100%;
+    position: absolute;
+    bottom: 100px;
+}
+
+.but-container-h {
+    top: 75px;
+}
+
+.but-container li {
+    display: block;
+    list-style: none;
+    width: 30%;
+    margin-right: 3%;
+    float: left;
+}
+
+.but-container li button {
+    display: block;
+    height: 55px;
+    width: 255px;
+    font-size: 1.25em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.positive {
+    background-color: #0c0;
+    color: #fff;
+}
+.negative {
+    background-color: #c00;
+    color: #fff;
+}
+
+#choose-type {
+    display: none;
+}
+
+#result {
+    text-align: center;
+    padding: 25px 55px;
+    font-size: 2em;
+    background-color: #fff;
+}
